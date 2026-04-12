@@ -192,10 +192,6 @@ echo
     fi
 
     rm -rf data/data/com.termux/files/usr/bin/chat >/dev/null 2>&1
-    if [ ! -f "$HOME/.X-Fm/report" ]; then
-        mv $HOME/x-fmBanner/files/report $HOME/.X-Fm &
-        show_spinner "X-Fm-report"
-    fi
     if [ ! -f "/data/data/com.termux/files/usr/bin/chat" ]; then
         mv $HOME/x-fmBanner/files/chat.sh /data/data/com.termux/files/usr/bin/chat &
         chmod +x /data/data/com.termux/files/usr/bin/chat &
@@ -254,8 +250,9 @@ fi
 cp $HOME/x-fmBanner/files/ASCII-Shadow.flf $PREFIX/share/figlet/
 mv $HOME/x-fmBanner/files/remove /data/data/com.termux/files/usr/bin/
 chmod +x /data/data/com.termux/files/usr/bin/remove
-mv $HOME/x-fmBanner/files/x-fm.sh /data/data/com.termux/.X-Fm/
-chmod +x  /data/data/com.termux/.X-Fm/
+mkdir -p /data/data/com.termux/.X-Fm
+ mv $HOME/x-fmBanner/files/x-fm.sh /data/data/com.termux/.X-Fm/x-fm.sh
+chmod +x /data/data/com.termux/.X-Fm/x-fm.sh
 termux-reload-settings
 }
 dxnetcheck() {
