@@ -254,7 +254,7 @@ fi
 cp $HOME/x-fmBanner/files/ASCII-Shadow.flf $PREFIX/share/figlet/
 mv $HOME/x-fmBanner/files/remove /data/data/com.termux/files/usr/bin/
 chmod +x /data/data/com.termux/files/usr/bin/remove
-mv $HOME/x-fmBanner/files/dx-simu.sh /data/data/com.termux/.X-Fm/
+mv $HOME/x-fmBanner/files/x-fm.sh /data/data/com.termux/.X-Fm/
 chmod +x  /data/data/com.termux/.X-Fm/
 termux-reload-settings
 }
