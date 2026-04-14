@@ -1,75 +1,71 @@
-<h2 align="center"> X-Fm Banner </h2>
+# X-Fm Banner
 
-<p align="center">
-<b>X-Fm Banner — Termux Custom Banner Tool</b>
-</p>
+**X-Fm Banner — Termux Custom Banner Tool**
 
-<p align="center">
-  <a href="https://t.me/fmitofficial">
-    <img src="https://img.shields.io/badge/TELEGRAM-CHANNEL-blue?style=for-the-badge&logo=telegram" />
-  </a>
-  &nbsp;
-  <img src="https://img.shields.io/badge/VERSION-1.0.0-green?style=for-the-badge" />
-  &nbsp;
-  <img src="https://img.shields.io/badge/PLATFORM-TERMUX-orange?style=for-the-badge" />
-</p>
-![fmbanner](https://github.com/user-attachments/assets/a37269de-dfeb-449f-a06c-074b5fd211da)
+[![TELEGRAM](https://img.shields.io/badge/TELEGRAM-CHANNEL-blue?style=for-the-badge&logo=telegram)](https://t.me/fmitofficial)
+![VERSION](https://img.shields.io/badge/VERSION-1.0.0-green?style=for-the-badge)
+![PLATFORM](https://img.shields.io/badge/PLATFORM-TERMUX-orange?style=for-the-badge)
 
+![X-Fm Banner Preview](https://github.com/user-attachments/assets/f0f1c248-cc23-4a24-aa70-d4b71a4ee99b)
 
-## INSTALL WITH TERMUX :
+---
 
+## 📦 Installation (Termux)
+
+```bash
+apt update && apt upgrade -y
 ```
-apt update
-```
-```
-apt upgrade -y
-```
-```
+
+```bash
 pkg install git -y
 ```
-```
+
+```bash
 git clone https://github.com/X-Fm/x-fmBanner.git
 ```
-```
+
+```bash
 cd x-fmBanner/
 ```
-```
+
+```bash
 chmod +x *
 ```
-```
+
+```bash
 bash install.sh
 ```
 
-### RUN :
+### ▶️ Run
 
-```
+```bash
 exit
 ```
 
-### AT ONCE :
+### ⚡ One-Line Install
 
-```
+```bash
 apt update && apt upgrade -y ; pkg install git -y ; git clone https://github.com/X-Fm/x-fmBanner.git ; cd x-fmBanner/ ; chmod +x * ; bash install.sh
 ```
 
 ---
 
-<details>
-  <summary>How To Use</summary>
+## 🛠️ How To Use
 
-##### How to use X-Fm Banner tools
+<details>
+<summary>Click to expand</summary>
 
 - Run install script and follow the on-screen instructions
 - Use **UP / DOWN** arrow keys to navigate the menu
 - Press **Enter** to select an option
-- Enter your banner name (1–8 characters)
+- Enter your banner name **(1–8 characters)**
 - Type `exit` after setup to apply changes
 
 </details>
 
 ---
 
-## Features :
+## ✨ Features
 
 - 🎨 Custom Termux Banner with your name
 - 🐚 Auto ZSH + Oh-My-Zsh setup
@@ -80,7 +76,4 @@ apt update && apt upgrade -y ; pkg install git -y ; git clone https://github.com
 
 ---
 
-<p align="center">
-  Made with ❤️ by <b>X-Fm</b> &nbsp;|&nbsp;
-  <a href="https://t.me/fmitofficial">t.me/fmitofficial</a>
-</p>
+Made with ❤️ by **X-Fm** | [t.me/fmitofficial](https://t.me/fmitofficial)
