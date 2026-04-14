@@ -13,7 +13,8 @@
   &nbsp;
   <img src="https://img.shields.io/badge/PLATFORM-TERMUX-orange?style=for-the-badge" />
 </p>
-<h2 align="center"> <img src="https://raw.githubusercontent.com/X-Fm/x-fmBanner/main/files/Screenshot_2026-04-12-17-17-04-43_84d3000e3f4017145260f7618db1d683.jpg" width="470" /> </h2>
+![fmbanner](https://github.com/user-attachments/assets/a37269de-dfeb-449f-a06c-074b5fd211da)
+
 
 ## INSTALL WITH TERMUX :
 
