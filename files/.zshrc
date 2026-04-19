@@ -7,7 +7,6 @@ source /data/data/com.termux/files/home/.oh-my-zsh/plugins/zsh-autosuggestions/z
 source /data/data/com.termux/files/home/.oh-my-zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 alias ls='lsd'
 alias rd='termux-reload-settings'
-alias chat='/data/data/com.termux/files/usr/bin/chat'
 
 clear
 
@@ -27,15 +26,14 @@ C='\033[1;92m[\033[1;00m</>\033[1;32m]\033[1;92m'
 lm='\033[96m▱▱▱▱▱▱▱▱▱▱▱▱\033[0m〄\033[96m▱▱▱▱▱▱▱▱▱▱▱▱\033[1;00m'
 dm='\033[93m▱▱▱▱▱▱▱▱▱▱▱▱\033[0m〄\033[93m▱▱▱▱▱▱▱▱▱▱▱▱\033[1;00m'
 aHELL="\uf489"
-USER="\uf007"
 TERMINAL="\ue7a2"
 PKGS="\uf8d6"
-UPT="\uf49b"
 CAL="\uf073"
 
 bol='\033[1m'
 bold="${bol}\e[4m"
 THRESHOLD=100
+
 check_disk_usage() {
     local threshold=${1:-$THRESHOLD}
     local total_size
@@ -55,79 +53,57 @@ check_disk_usage() {
 
 data=$(check_disk_usage)
 
-spin() {
-clear
-banner
-    local pid=$!
-    local delay=0.40
-    local spinner=('█■■■■' '■█■■■' '■■█■■' '■■■█■' '■■■■█')
+# ── Auto-Update ──────────────────────────────────────────────
+GITHUB_RAW="https://raw.githubusercontent.com/X-Fm/x-fmBanner/main"
+LOCAL_VERSION_FILE="$HOME/.termux/xfm_version.txt"
 
-    while ps -p $pid > /dev/null; do
-        for i in "${spinner[@]}"; do
-            tput civis
-            echo -ne "\033[1;96m\r [+] Downloading..please wait.........\e[33m[\033[1;92m$i\033[1;93m]\033[1;0m   "
-            sleep $delay
-            printf "\b\b\b\b\b\b\b\b"
-        done
-    done
-    printf "   \b\b\b\b\b"
-    tput cnorm
-    printf "\e[1;93m [Done]\e[0m\n"
-    echo
-    sleep 1
-}
+auto_update() {
+    # Internet check — skip silently if offline
+    curl --silent --head --fail https://github.com > /dev/null 2>&1 || return
 
-XFM_SERVER="https://codex-server-pied.vercel.app"
-cd $HOME
-D1=".termux"
-VERSION="$D1/dx.txt"
-if [ -f "$VERSION" ]; then
-    version=$(cat "$VERSION")
-else
-    echo "" > "$VERSION"
-    version=$(cat "$VERSION")
-fi
+    _xfm_remote=$(curl -fsSL "$GITHUB_RAW/version.txt" 2>/dev/null | tr -d '[:space:]')
+    [ -z "$_xfm_remote" ] && return
 
-banner() {
-clear
-echo
-echo -e "   ${g}██╗  ██╗      ${c}███████╗███╗   ███╗"
-echo -e "   ${g}╚██╗██╔╝      ${c}██╔════╝████╗ ████║"
-echo -e "   ${g} ╚███╔╝ █████╗${c}█████╗  ██╔████╔██║"
-echo -e "   ${g} ██╔██╗ ╚════╝${c}██╔══╝  ██║╚██╔╝██║"
-echo -e "   ${g}██╔╝ ██╗      ${c}██║     ██║ ╚═╝ ██║"
-echo -e "   ${g}╚═╝  ╚═╝      ${c}╚═╝     ╚═╝     ╚═╝${n}"
-echo
-}
+    if [ -f "$LOCAL_VERSION_FILE" ]; then
+        _xfm_local=$(cat "$LOCAL_VERSION_FILE" | tr -d '[:space:]')
+    else
+        _xfm_local=""
+    fi
 
-udp() {
-    if [ -n "$version" ]; then
-        messages=$(curl -s "$XFM_SERVER/check_version" | jq -r --arg vs "$version" '.[] | select(.message == $vs) | .message' 2>/dev/null)
-        if [ -n "$messages" ]; then
-            banner
-            echo -e " ${A} ${c}Tools Updated ${n}| ${c}New ${g}$messages"
-            sleep 3
-            git clone https://github.com/X-Fm/x-fmBanner.git &> /dev/null &
-            spin
+    if [ "$_xfm_remote" != "$_xfm_local" ]; then
+        clear
+        echo
+        echo -e " ${A} ${c}New update found! ${g}v${_xfm_remote}${c} — updating...${n}"
+        echo -e " ${lm}"
+        cd "$HOME"
+        rm -rf x-fmBanner
+        git clone https://github.com/X-Fm/x-fmBanner.git > /dev/null 2>&1
+        if [ -d "$HOME/x-fmBanner" ]; then
+            echo "$_xfm_remote" > "$LOCAL_VERSION_FILE"
             cd x-fmBanner
             bash install.sh
         else
-            clear
+            echo -e " ${E} ${r}Update failed. Check your internet.${n}"
+            sleep 2
         fi
     fi
 }
 
+auto_update
+# ─────────────────────────────────────────────────────────────
+
 load() {
-clear
-echo -e "${TERMINAL}${r}●${n}"
-sleep 0.2
-clear
-echo -e "${TERMINAL}${r}●${y}●${n}"
-sleep 0.2
-clear
-echo -e "${TERMINAL}${r}●${y}●${b}●${n}"
-sleep 0.2
+    clear
+    echo -e "${TERMINAL}${r}●${n}"
+    sleep 0.2
+    clear
+    echo -e "${TERMINAL}${r}●${y}●${n}"
+    sleep 0.2
+    clear
+    echo -e "${TERMINAL}${r}●${y}●${b}●${n}"
+    sleep 0.2
 }
+
 widths=$(stty size | awk '{print $2}')
 width=$(tput cols)
 var=$((width - 1))
@@ -136,11 +112,9 @@ var3=$(seq -s\  ${var} | tr -d '[:digit:]')
 var4=$((width - 20))
 
 PUT() { echo -en "\033[${1};${2}H"; }
-DRAW() { echo -en "\033%"; echo -en "\033(0"; }
-WRITE() { echo -en "\033(B"; }
 HIDECURSOR() { echo -en "\033[?25l"; }
 NORM() { echo -en "\033[?12l\033[?25h"; }
-udp
+
 HIDECURSOR
 load
 clear
@@ -172,13 +146,7 @@ done
 PUT 10 ${var4}
 echo -e "\e[32m[\e[0m\uf489\e[32m] \e[36mX-Fm \e[36m1.0.0\e[0m"
 PUT 12 0
-ads1=$(curl -s "$XFM_SERVER/ads" | jq -r '.[] | .message' 2>/dev/null)
-
-if [ -z "$ads1" ]; then
 DATE=$(date +"%Y-%b-%a ${g}—${c} %d")
 TM=$(date +"%I:%M:%S ${g}— ${c}%p")
 echo -e " ${g}[${n}${CAL}${g}] ${c}${TM} ${g}| ${c}${DATE}"
-else
-    echo -e " ${g}[${n}${PKGS}${g}] ${c}X-Fm: ${g}$ads1"
-    fi
 NORM
