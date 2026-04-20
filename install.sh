@@ -62,17 +62,40 @@ check_disk_usage() {
 }
 data=$(check_disk_usage)
 
-# ── Intro screen (no per-character sleep) ──
+# ── Intro animation ──
 start() {
     clear
+    local LIME='\e[38;5;154m'
+    local CYAN='\e[36m'
+    local NC='\e[0m'
+    local width
+    width=$(tput cols 2>/dev/null || echo 40)
+
+    _type() {
+        local text="$1"
+        local delay="${2:-0.05}"
+        local len=${#text}
+        local pad=$(( (width - len) / 2 ))
+        [ $pad -lt 0 ] && pad=0
+        printf "%${pad}s" ""
+        for (( i=0; i<len; i++ )); do
+            printf "${LIME}${text:$i:1}${NC}"
+            sleep "$delay"
+        done
+        echo
+    }
+
     echo
     echo
-    echo -e "\033[1;92m  ╔══════════════════════════════╗"
-    echo -e "  ║   \033[1;96m[ X-Fm STARTED ]          \033[1;92m║"
-    echo -e "  ║   \033[1;93mHELLO DEAR USER           \033[1;92m║"
-    echo -e "  ║   \033[1;95mX-Fm WILL PROTECT YOU     \033[1;92m║"
-    echo -e "  ║   \033[1;96mENJOY OUR X-Fm BANNER     \033[1;92m║"
-    echo -e "  ╚══════════════════════════════╝\033[0m"
+    _type "[ X-Fm STARTED ]"        0.05
+    sleep 0.3
+    _type "HELLO DEAR USER — I'M X-Fm" 0.06
+    sleep 0.4
+    _type "X-Fm WILL PROTECT YOU"   0.06
+    sleep 0.4
+    _type "ENJOY OUR X-Fm BANNER"   0.06
+    sleep 0.5
+    _type "! . . . . . . . . . . ¡" 0.07
     echo
     sleep 1.5
     clear
@@ -318,63 +341,6 @@ setupx() {
     exit 0
 }
 
-# ── Menu ──
-banner2() {
-    clear
-    banner
-    echo -e "${c}╭════════════════════════════════════════════════⊷"
-    echo -e "${c}┃ ${p}❏ ${g}Use ↑ ↓ to navigate, Enter to select${n}"
-    echo -e "${c}╰════════════════════════════════════════════════⊷"
-}
 
-options=("Free Usage" "Premium")
-selected=0
-
-display_menu() {
-    banner2
-    echo
-    echo -e " ${g}■ \e[4m${p}Select An Option\e[0m ${g}▪︎${n}"
-    echo
-    for i in "${!options[@]}"; do
-        if [ $i -eq $selected ]; then
-            echo -e " ${g}〄> ${c}${options[$i]} ${g}<〄${n}"
-        else
-            echo -e "     ${options[$i]}"
-        fi
-    done
-}
-
-while true; do
-    display_menu
-    read -rsn1 input
-    if [[ "$input" == $'\e' ]]; then
-        read -rsn2 -t 0.1 input
-        case "$input" in
-            '[A')
-                ((selected--))
-                [ $selected -lt 0 ] && selected=$(( ${#options[@]} - 1 ))
-                ;;
-            '[B')
-                ((selected++))
-                [ $selected -ge ${#options[@]} ] && selected=0
-                ;;
-        esac
-    elif [[ "$input" == "" ]]; then
-        case ${options[$selected]} in
-            "Free Usage")
-                echo -e "\n ${A} ${c}Starting free setup...${n}"
-                sleep 1
-                setupx
-                ;;
-            "Premium")
-                echo -e "\n ${g}Opening Telegram...${n}"
-                sleep 1
-                xdg-open "https://t.me/fmitofficial" 2>/dev/null || \
-                    termux-open-url "https://t.me/fmitofficial" 2>/dev/null
-                cd "$HOME"
-                rm -rf "$SCRIPT_DIR"
-                exit 0
-                ;;
-        esac
-    fi
-done
+# ── Start directly ──
+setupx
