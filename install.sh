@@ -111,21 +111,7 @@ ensure_curl() {
     fi
 }
 
-help() {
-    clear
-    echo
-    echo -e " ${p}■ \e[4m${g}Navigation\e[0m ${p}▪︎${n}"
-    echo
-    echo -e " ${y}Use Termux Extra key Buttons${n}"
-    echo
-    echo -e "  UP    ↑   move up"
-    echo -e "  DOWN  ↓   move down"
-    echo -e "  ENTER     select option"
-    echo
-    echo -e " ${b}Press Enter to continue${n}"
-    read -r
-}
-help
+
 
 # ── Spinner for installs ──
 spin() {
