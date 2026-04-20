@@ -53,44 +53,6 @@ check_disk_usage() {
 
 data=$(check_disk_usage)
 
-# ── Auto-Update ──────────────────────────────────────────────
-GITHUB_RAW="https://raw.githubusercontent.com/X-Fm/x-fmBanner/main"
-LOCAL_VERSION_FILE="$HOME/.termux/xfm_version.txt"
-
-auto_update() {
-    # Internet check — skip silently if offline
-    curl --silent --head --fail https://github.com > /dev/null 2>&1 || return
-
-    _xfm_remote=$(curl -fsSL "$GITHUB_RAW/version.txt" 2>/dev/null | tr -d '[:space:]')
-    [ -z "$_xfm_remote" ] && return
-
-    if [ -f "$LOCAL_VERSION_FILE" ]; then
-        _xfm_local=$(cat "$LOCAL_VERSION_FILE" | tr -d '[:space:]')
-    else
-        _xfm_local=""
-    fi
-
-    if [ "$_xfm_remote" != "$_xfm_local" ]; then
-        clear
-        echo
-        echo -e " ${A} ${c}New update found! ${g}v${_xfm_remote}${c} — updating...${n}"
-        echo -e " ${lm}"
-        cd "$HOME"
-        rm -rf x-fmBanner
-        git clone https://github.com/X-Fm/x-fmBanner.git > /dev/null 2>&1
-        if [ -d "$HOME/x-fmBanner" ]; then
-            echo "$_xfm_remote" > "$LOCAL_VERSION_FILE"
-            cd x-fmBanner
-            bash install.sh
-        else
-            echo -e " ${E} ${r}Update failed. Check your internet.${n}"
-            sleep 2
-        fi
-    fi
-}
-
-auto_update
-# ─────────────────────────────────────────────────────────────
 
 load() {
     clear
