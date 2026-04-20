@@ -146,7 +146,20 @@ done
 PUT 10 ${var4}
 echo -e "\e[32m[\e[0m\uf489\e[32m] \e[36mX-Fm \e[36m1.0.0\e[0m"
 PUT 12 0
-DATE=$(date +"%Y-%b-%a ${g}—${c} %d")
-TM=$(date +"%I:%M:%S ${g}— ${c}%p")
-echo -e " ${g}[${n}${CAL}${g}] ${c}${TM} ${g}| ${c}${DATE}"
+# Date/Time — centered
+_dt_line() {
+    local day tm dt full
+    day=$(date +"%a")
+    tm=$(date +"%I:%M:%S %p")
+    dt=$(date +"%d-%m-%Y")
+    full="${day}  ${tm}  ${dt}"
+    local len=${#full}
+    local w
+    w=$(tput cols 2>/dev/null || echo 40)
+    local pad=$(( (w - len) / 2 ))
+    [ $pad -lt 0 ] && pad=0
+    printf "%${pad}s" ""
+    echo -e "${g}${day}${n}  ${c}${tm}${n}  ${y}${dt}${n}"
+}
+_dt_line
 NORM
